@@ -1,4 +1,4 @@
-name: Log API_URL Secret (Development)
+name: Run Express App and Log API_URL
 
 on:
     push:
@@ -6,16 +6,28 @@ on:
             - '**'
 
 jobs:
-    log_secret:
+    run_app:
         environment: development
         runs-on: ubuntu-latest
         steps:
-            - name: Log API_URL
-              id: print_api_url #Give it an id so we can refer to the output later
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18 # Or your preferred Node.js version
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run Express app
               env:
                   API_URL: ${{ secrets.API_URL }}
-              run: |
-                  echo "::set-output name=api_url::$API_URL" # Set an output variable
-            - name: Echo API_URL Output
-              run: |
-                  echo "API_URL: ${{ steps.print_api_url.outputs.api_url }}" #Echo the output
+              run: node app.js & # Run in background
+
+            - name: Wait 5 seconds for log
+              run: sleep 5
+
+            - name: Check the process exists
+              run: ps aux | grep 'node app.js'
