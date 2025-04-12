@@ -1,20 +1,21 @@
 name: Log API_URL Secret (Development)
 
 on:
-  push:
-    branches:
-      - "**"
+    push:
+        branches:
+            - '**'
 
 jobs:
-  log_secret:
-    environment: development
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log API_URL
-        id: print_api_url #Give it an id so we can refer to the output later
-        env:
-          API_URL: ${{ secrets.API_URL }}
-        run: |
-          echo "::set-output name=api_url::$API_URL" # Set an output variable
-      - name: Echo API_URL Output
-        run: echo "API_URL: ${{ steps.print_api_url.outputs.api_url }}" #Echo the output
+    log_secret:
+        environment: development
+        runs-on: ubuntu-latest
+        steps:
+            - name: Log API_URL
+              id: print_api_url #Give it an id so we can refer to the output later
+              env:
+                  API_URL: ${{ secrets.API_URL }}
+              run: |
+                  echo "::set-output name=api_url::$API_URL" # Set an output variable
+            - name: Echo API_URL Output
+              run: |
+                  echo "API_URL: ${{ steps.print_api_url.outputs.api_url }}" #Echo the output
