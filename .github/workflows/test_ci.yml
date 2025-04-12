@@ -1,0 +1,16 @@
+name: Log API_URL Secret
+
+on:
+    push:
+        branches:
+            - '**'
+
+jobs:
+    log_secret:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Log API_URL
+              env:
+                  API_URL: ${{ secrets.API_URL }}
+              run: |
+                  echo "API_URL: $API_URL"
